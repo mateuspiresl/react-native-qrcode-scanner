@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import Permissions from 'react-native-permissions';
-import { RNCamera as Camera } from 'react-native-camera';
+import Camera from 'react-native-camera';
 
 const PERMISSION_AUTHORIZED = 'authorized';
 const CAMERA_PERMISSION = 'camera';
@@ -148,9 +148,18 @@ export default class QRCodeScanner extends Component {
     }
   }
 
+  /**
+   * Returns the RNCamera component reference.
+   * @returns {Object} The RNCamera component reference.
+   */
+  get camera() {
+    return this.refs.camera;
+  }
+
   disable() {
     this.setState({ disableVibrationByUser: true });
   }
+
   enable() {
     this.setState({ disableVibrationByUser: false });
   }
@@ -196,7 +205,12 @@ export default class QRCodeScanner extends Component {
       } else {
         return (
           <View style={styles.rectangleContainer}>
-            <View style={[styles.rectangle, this.props.markerStyle ? this.props.markerStyle : null]} />
+            <View
+              style={[
+                styles.rectangle,
+                this.props.markerStyle ? this.props.markerStyle : null,
+              ]}
+            />
           </View>
         );
       }
@@ -221,6 +235,7 @@ export default class QRCodeScanner extends Component {
             }}
           >
             <Camera
+              ref="camera"
               style={[styles.camera, this.props.cameraStyle]}
               onBarCodeRead={this._handleBarCodeRead.bind(this)}
               type={this.props.cameraType}
@@ -233,6 +248,7 @@ export default class QRCodeScanner extends Component {
       }
       return (
         <Camera
+          ref="camera"
           type={cameraType}
           style={[styles.camera, this.props.cameraStyle]}
           onBarCodeRead={this._handleBarCodeRead.bind(this)}
